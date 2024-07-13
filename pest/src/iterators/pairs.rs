@@ -406,6 +406,10 @@ impl<'i, R: RuleType> Pairs<'i, R> {
             }
         }
     }
+
+    fn len_queue(&self) -> usize {
+        self.queue.len()
+    }
 }
 
 impl<'i, R: RuleType> ExactSizeIterator for Pairs<'i, R> {
@@ -670,6 +674,13 @@ mod tests {
         let pair = pairs.next().unwrap();
         assert_eq!(pair.as_str(), "abc");
         assert_eq!(pair.line_col(), (1, 1));
+    }
+
+    #[test]
+    fn len_queue() {
+        let pairs = AbcParser::parse(Rule::a, "abcde").unwrap();
+
+        assert_eq!(pairs.len_queue(), 6);
     }
 
     #[test]
